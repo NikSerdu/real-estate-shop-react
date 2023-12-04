@@ -1,20 +1,50 @@
 import axios from "axios";
-
-export const getContentType = () => ({
-  "Content-Type": "application/json",
-});
+import { AuthService } from "../services/auth.service";
+import { getAccessToken } from "./api.helper";
 
 export const instance = axios.create({
-  baseURL: "http://localhost:5254/api/",
-  headers: getContentType(),
+  baseURL: "http://localhost:5254/api",
+  headers: { "Content-Type": "application/json" },
 });
 
 export const instanceUploadFiles = axios.create({
-  baseURL: "http://localhost:5254/api/",
+  baseURL: "http://localhost:5254/api",
   headers: { "Content-Type": "multipart/form-data" },
 });
 
-// export const instance = axios.create({
-//   baseURL: process.env.SERVER_URL,
-//   headers: getContentType(),
-// });
+export const authInstance = axios.create({
+  baseURL: "http://localhost:5254/api",
+  headers: { "Content-Type": "application/json" },
+});
+
+authInstance.interceptors.request.use((config) => {
+  const accessToken = getAccessToken();
+
+  if (config.headers && accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
+authInstance.interceptors.response.use(
+  (config) => config,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (
+      error.response.status === 401 &&
+      error.config &&
+      !error.config._isRetry
+    ) {
+      originalRequest._isRetry = true;
+
+      try {
+        await AuthService.getNewTokens();
+        return authInstance.request(originalRequest);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    throw error;
+  }
+);

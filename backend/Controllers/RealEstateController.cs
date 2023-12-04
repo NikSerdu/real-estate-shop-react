@@ -10,7 +10,7 @@ namespace backend.Controllers
     {
         private readonly IRealEstateService realEstateService;
 
-        public RealEstateController(ApplicationDbContext context, IRealEstateService realEstateService)
+        public RealEstateController(IRealEstateService realEstateService)
         {
             this.realEstateService = realEstateService;
         }

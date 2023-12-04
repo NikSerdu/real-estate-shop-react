@@ -3,6 +3,7 @@ using backend.Entities;
 using backend.Helpers;
 using backend.Interfaces;
 using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -31,7 +32,7 @@ namespace backend.Controllers
             return Ok(flat);
         }
 
-
+        [Authorize]
         [HttpDelete("flats/{id}")]
         public async Task<ActionResult<ApiResponse>> Delete([FromRoute] int id)
         {
@@ -40,6 +41,7 @@ namespace backend.Controllers
 
         }
 
+        [Authorize]
         [HttpPost("flats")]
         public async Task<ActionResult<ApiResponse>> CreateHouse([FromBody] CreateFlat dto)
         {

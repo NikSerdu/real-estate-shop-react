@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using backend.Auth;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace backend.Entities
 {
@@ -39,6 +41,12 @@ namespace backend.Entities
 
         [Required]
         public List<Image> Images { get; set; }
+
+        [Required]
+        public string? UserId { get; set; }
+
+        [JsonIgnore]
+        public ApplicationUser User { get; set; }
 
     }
 }

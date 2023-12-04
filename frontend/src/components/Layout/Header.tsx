@@ -1,70 +1,45 @@
-import cn from "clsx";
+import { Button } from "@mui/material";
 import { FC, useState } from "react";
 import { FaBookmark } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { useActions } from "../../hooks/useActions";
+import { useAuth } from "../../hooks/useAuth";
 import Container from "../Container";
-const menu = [
-  {
-    id: 1,
-    title: "Home",
-    href: "/",
-  },
-  {
-    id: 2,
-    title: "Properties",
-    href: "/properties",
-  },
-  {
-    id: 3,
-    title: "Service",
-    href: "/service",
-  },
-  {
-    id: 4,
-    title: "Contacts",
-    href: "/contacts",
-  },
-  {
-    id: 5,
-    title: "About us",
-    href: "/about-us",
-  },
-];
+import Auth from "../Home/Auth";
+import Navbar from "../Home/Navbar";
 
 const Header: FC = () => {
-  const [indexPage, setIndexPage] = useState(1);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  const { user } = useAuth();
+  const { logout } = useActions();
   return (
     <Container className="relative">
       <div className="flex justify-between items-center absolute left-0 top-8 right-0">
         <div className="text-2xl">HOME</div>
-        <nav className="flex items-center flex-wrap gap-6 bg-white rounded-full px-8 py-5 ">
-          {menu.map((item) => {
-            return (
-              <Link
-                key={item.id}
-                to={item.href}
-                className={cn("", {
-                  "text-blue-300": item.id === indexPage,
-                })}
-                onClick={() => setIndexPage(item.id)}
-              >
-                {item.title}
-              </Link>
-            );
-          })}
-        </nav>
+        <Navbar />
         <div className="flex flex-wrap gap-2">
           <button className="flex items-center flex-wrap gap-3">
             <Link to={"/favourites"} className="">
               <FaBookmark />
             </Link>
-            <div className="text-2xl">
-              <FiLogIn />
-            </div>
+            {!user && (
+              <div className="text-2xl" onClick={handleOpen}>
+                <FiLogIn />
+              </div>
+            )}
+            {user && (
+              <Button variant="contained" onClick={logout}>
+                Logout
+              </Button>
+            )}
           </button>
         </div>
       </div>
+      <Auth handleClose={handleClose} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Container>
   );
 };

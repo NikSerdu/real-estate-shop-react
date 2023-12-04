@@ -12,6 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { FC, useState } from "react";
 import { useMutation } from "react-query";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { FileService } from "../../services/file.service";
 import { FlatService } from "../../services/flat.service";
 import { HouseService } from "../../services/house.service";
@@ -32,6 +33,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const Create: FC = () => {
+  const id = useTypedSelector((state) => state.user.user?.userId);
   const [type, setType] = useState<string>("house");
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<string>("");
@@ -103,7 +105,7 @@ const Create: FC = () => {
             title,
             type,
             createdAt: date.getTime(),
-            userId: 1,
+            userId: +id,
             gardenArea,
             numberOfPhone,
           });
@@ -120,7 +122,7 @@ const Create: FC = () => {
             floor,
             hasBalcony,
             createdAt: date.getTime(),
-            userId: 1,
+            userId: +id,
             numberOfPhone,
           });
       },

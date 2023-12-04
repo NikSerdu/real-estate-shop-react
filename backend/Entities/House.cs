@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using backend.Auth;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace backend.Entities
@@ -15,10 +16,6 @@ namespace backend.Entities
         [Required]
         public int GardenArea { get; set; }
 
-        [Required]
-
-        public int? UserId { get; set; }
-        [JsonIgnore]
-        public User User { get; set; } = default!;
+        
     }
 }

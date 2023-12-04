@@ -1,4 +1,4 @@
-﻿using backend.Entities;
+﻿/*using backend.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace backend.DTOs
@@ -7,8 +7,7 @@ namespace backend.DTOs
     {
         [Required]
 
-        public string Email { get; set; } = default!;
-        [Required]
+
         public string Name { get; set; } = default!;
         [Required]
         public string Password { get; set; } = default!;
@@ -18,7 +17,6 @@ namespace backend.DTOs
         {
             return new User
             {
-               Email = this.Email,
                Name = this.Name,
                Password = this.Password
             };
@@ -26,3 +24,4 @@ namespace backend.DTOs
 
     }
 }
+*/

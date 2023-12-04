@@ -27,8 +27,8 @@ namespace backend.Services
 
         public async Task<List<RealEstate>> GetByUserId(int id)
         {
-            var houses = await context.Houses.Where(h => h.UserId == id).Include(h => h.Images).ToListAsync();
-            var flats = await context.Flats.Where(f => f.UserId == id).Include(f => f.Images).ToListAsync();
+            var houses = await context.Houses.Where(h => h.UserId == id.ToString()).Include(h => h.Images).ToListAsync();
+            var flats = await context.Flats.Where(f => f.UserId == id.ToString()).Include(f => f.Images).ToListAsync();
 
             var allRealEstates = new List<RealEstate>();
             allRealEstates.AddRange(houses);
