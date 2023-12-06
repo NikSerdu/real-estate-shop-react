@@ -6,5 +6,6 @@ dotnet watch run
 ```
 # Frontend
 ```
+npm i
 npm run dev
 ```
