@@ -1,4 +1,4 @@
-import { instance } from "../api/api.interceptor";
+import { authInstance, instance } from "../api/api.interceptor";
 import { IHouse, IHouseCreate } from "../types/house.interface";
 import { IResponse } from "../types/response.interface";
 
@@ -20,7 +20,7 @@ export const HouseService = {
     return price;
   },
   async create(data: IHouseCreate) {
-    const response = await instance<IResponse>({
+    const response = await authInstance<IResponse>({
       url: `houses`,
       method: "POST",
       data,
@@ -28,7 +28,7 @@ export const HouseService = {
     return response;
   },
   async delete(id: number) {
-    const response = await instance<IResponse>({
+    const response = await authInstance<IResponse>({
       url: `houses/${id}`,
       method: "DELETE",
     });

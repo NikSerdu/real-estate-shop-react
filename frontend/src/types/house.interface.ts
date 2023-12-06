@@ -7,5 +7,5 @@ export interface IHouse extends IRealEstate {
 }
 
 export interface IHouseCreate extends Omit<IHouse, "id"> {
-  userId: number;
+  userId: string;
 }

@@ -6,5 +6,5 @@ export interface IFlat extends IRealEstate {
 }
 
 export interface IFlatCreate extends Omit<IFlat, "id"> {
-  userId: number;
+  userId: string;
 }

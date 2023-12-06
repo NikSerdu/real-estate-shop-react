@@ -72,7 +72,6 @@ const House: FC<TypeData> = ({ data }) => {
             <p>Phone: {numberOfPhone}</p>
             {calcPrice !== 0 && <p>Site price: ${calcPrice}</p>}
             <div className="flex gap-3">
-              <Button text="Save" />
               <div className="" onClick={() => mutateAsync()}>
                 <Button text="Calculate price" />
               </div>

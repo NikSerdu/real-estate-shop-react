@@ -12,6 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { FC, useState } from "react";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { FileService } from "../../services/file.service";
 import { FlatService } from "../../services/flat.service";
@@ -50,7 +51,11 @@ const Create: FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]); // Step 1
   const [open, setOpen] = useState(false);
   const formData = new FormData();
+  const navigate = useNavigate();
 
+  const goBack = () => {
+    navigate(-1);
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -105,7 +110,7 @@ const Create: FC = () => {
             title,
             type,
             createdAt: date.getTime(),
-            userId: +id,
+            userId: id,
             gardenArea,
             numberOfPhone,
           });
@@ -122,7 +127,7 @@ const Create: FC = () => {
             floor,
             hasBalcony,
             createdAt: date.getTime(),
-            userId: +id,
+            userId: id,
             numberOfPhone,
           });
       },

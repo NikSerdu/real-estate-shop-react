@@ -1,6 +1,6 @@
 import cn from "clsx";
-import { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { FC } from "react";
+import { Link, useLocation } from "react-router-dom";
 const menu = [
   {
     id: 1,
@@ -30,7 +30,7 @@ const menu = [
 ];
 
 const Navbar: FC = () => {
-  const [indexPage, setIndexPage] = useState<number>(1);
+  const location = useLocation();
   return (
     <div>
       <nav className="flex items-center flex-wrap gap-6 bg-white rounded-full px-8 py-5 ">
@@ -40,9 +40,13 @@ const Navbar: FC = () => {
               key={item.id}
               to={item.href}
               className={cn("", {
-                "text-blue-300": item.id === indexPage,
+                "text-blue-300":
+                  location.pathname
+                    .toLowerCase()
+                    .split("/")
+                    .includes(item.title.toLowerCase()) ||
+                  (location.pathname === "/" && item.href === "/"),
               })}
-              onClick={() => setIndexPage(item.id)}
             >
               {item.title}
             </Link>

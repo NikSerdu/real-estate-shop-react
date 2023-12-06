@@ -1,4 +1,4 @@
-import { instance } from "../api/api.interceptor";
+import { authInstance, instance } from "../api/api.interceptor";
 import { IFlat, IFlatCreate } from "../types/flat.interface";
 import { IResponse } from "../types/response.interface";
 
@@ -20,7 +20,7 @@ export const FlatService = {
     return price;
   },
   async create(data: IFlatCreate) {
-    const response = await instance<IResponse>({
+    const response = await authInstance<IResponse>({
       url: `flats`,
       method: "POST",
       data,
@@ -28,7 +28,7 @@ export const FlatService = {
     return response;
   },
   async delete(id: number) {
-    const response = await instance<IResponse>({
+    const response = await authInstance<IResponse>({
       url: `flats/${id}`,
       method: "DELETE",
     });

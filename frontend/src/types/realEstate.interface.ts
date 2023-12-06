@@ -13,3 +13,8 @@ export interface IRealEstate {
   createdAt: number;
   numberOfPhone: string;
 }
+
+export interface IRealEstateWithPagination {
+  allRealEstates: IRealEstate[];
+  totalCount: number;
+}

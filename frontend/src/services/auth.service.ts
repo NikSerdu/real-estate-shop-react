@@ -34,8 +34,6 @@ export const AuthService = {
   },
 
   async getNewTokens() {
-    console.log("раз");
-
     const accessToken = getAccessToken();
     const refreshToken = getRefreshToken();
 
@@ -43,7 +41,6 @@ export const AuthService = {
       accessToken: accessToken,
       refreshToken: refreshToken,
     };
-    console.log(data);
     const response = await instance<ITokensResponse>({
       url: `/authenticate/refresh-token`,
       method: "POST",

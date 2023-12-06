@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { FC, useState } from "react";
 import { FaBookmark } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
@@ -8,6 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Container from "../Container";
 import Auth from "../Home/Auth";
 import Navbar from "../Home/Navbar";
+import User from "../User/User";
 
 const Header: FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,11 +31,7 @@ const Header: FC = () => {
                 <FiLogIn />
               </div>
             )}
-            {user && (
-              <Button variant="contained" onClick={logout}>
-                Logout
-              </Button>
-            )}
+            {user && <User />}
           </button>
         </div>
       </div>
