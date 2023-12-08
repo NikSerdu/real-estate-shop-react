@@ -12,7 +12,6 @@ import {
 import { styled } from "@mui/material/styles";
 import { FC, useState } from "react";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { FileService } from "../../services/file.service";
 import { FlatService } from "../../services/flat.service";
@@ -34,16 +33,21 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const Create: FC = () => {
+  const [commonData, setCommonData] = useState({
+    type: "house",
+    title: "",
+    price: "",
+    area: "",
+    address: "",
+    description: "",
+    numberOfPhone: "",
+  });
+  const [toastText, setToastText] = useState<string>("Success!");
+  const [toastType, setToastType] = useState<"success" | "error">("success");
   const id = useTypedSelector((state) => state.user.user?.userId);
-  const [type, setType] = useState<string>("house");
-  const [title, setTitle] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
-  const [area, setArea] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
+
   const [rooms, setRooms] = useState<number>(1);
   const [gardenArea, setGardenArea] = useState<number>(0);
-  const [description, setDescription] = useState<string>("");
-  const [numberOfPhone, setNumberOfPhone] = useState<string>("");
   const [hasGarage, setHasGarage] = useState<boolean>(false);
   const [hasGarden, setHasGarden] = useState<boolean>(false);
   const [hasBalcony, setHasBalcony] = useState<boolean>(false);
@@ -51,11 +55,29 @@ const Create: FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]); // Step 1
   const [open, setOpen] = useState(false);
   const formData = new FormData();
-  const navigate = useNavigate();
 
-  const goBack = () => {
-    navigate(-1);
+  const validation = () => {
+    const keys = Object.keys(commonData);
+    let cond1 = true;
+    keys.forEach((item) => {
+      if (commonData[item] === "") cond1 = false;
+    });
+    const cond2 = uploadedFiles.length !== 0;
+    const cond3 =
+      commonData.type === "house" && hasGarden === true
+        ? gardenArea !== 0
+        : true;
+    return cond1 && cond2 && cond3;
   };
+
+  function handleChange(e: any) {
+    const value = e.target.value;
+    setCommonData({
+      ...commonData,
+      [e.target.name]: value,
+    });
+  }
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -74,6 +96,13 @@ const Create: FC = () => {
     (data: IHouseCreate) => HouseService.create(data),
     {
       onSuccess: () => {
+        setToastText("Success!");
+        setToastType("success");
+        setOpen(true);
+      },
+      onError: () => {
+        setToastText("All fields are required!");
+        setToastType("error");
         setOpen(true);
       },
     }
@@ -84,6 +113,8 @@ const Create: FC = () => {
     (data: IFlatCreate) => FlatService.create(data),
     {
       onSuccess: () => {
+        setToastText("Success!");
+        setToastType("success");
         setOpen(true);
       },
     }
@@ -97,48 +128,42 @@ const Create: FC = () => {
         const date = new Date();
         const images: { url: string }[] = [];
         data.data.imageUrls.forEach((item) => images.push({ url: item }));
-        if (type === "house")
+        if (commonData.type === "house")
           createHouse({
-            address,
-            area,
-            description,
+            ...commonData,
+            rooms,
             hasGarage,
             hasGarden,
             images,
-            price,
-            rooms,
-            title,
-            type,
             createdAt: date.getTime(),
             userId: id,
             gardenArea,
-            numberOfPhone,
           });
-        if (type === "flat")
+        if (commonData.type === "flat")
           createFlat({
-            address,
-            area,
-            description,
-            images,
-            price,
+            ...commonData,
             rooms,
-            title,
-            type,
+            images,
             floor,
             hasBalcony,
             createdAt: date.getTime(),
             userId: id,
-            numberOfPhone,
           });
       },
     }
   );
 
   const create = () => {
-    uploadedFiles.forEach((file) => {
-      formData.append("imageFiles", file);
-    });
-    saveImages();
+    if (validation()) {
+      uploadedFiles.forEach((file) => {
+        formData.append("imageFiles", file);
+      });
+      saveImages();
+    } else {
+      setToastText("All fields are required!");
+      setToastType("error");
+      setOpen(true);
+    }
   };
 
   return (
@@ -183,11 +208,10 @@ const Create: FC = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={type}
+              value={commonData.type}
               label="Type"
-              onChange={(event: any) => {
-                setType(event.target.value);
-              }}
+              name={"type"}
+              onChange={handleChange}
             >
               <MenuItem value={"house"}>House</MenuItem>
               <MenuItem value={"flat"}>Flat</MenuItem>
@@ -196,26 +220,23 @@ const Create: FC = () => {
           <TextField
             id="outlined-controlled"
             label="Title"
-            value={title}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setTitle(event.target.value);
-            }}
+            value={commonData.title}
+            name={"title"}
+            onChange={handleChange}
           />
           <TextField
             id="outlined-controlled"
             label="Price"
-            value={price}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setPrice(event.target.value);
-            }}
+            value={commonData.price}
+            name={"price"}
+            onChange={handleChange}
           />
           <TextField
             id="outlined-controlled"
             label="Area"
-            value={area}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setArea(event.target.value);
-            }}
+            value={commonData.area}
+            name={"area"}
+            onChange={handleChange}
           />
           <TextField
             id="outlined-controlled"
@@ -228,28 +249,25 @@ const Create: FC = () => {
           <TextField
             id="outlined-controlled"
             label="Address"
-            value={address}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setAddress(event.target.value);
-            }}
+            value={commonData.address}
+            name={"address"}
+            onChange={handleChange}
           />
           <TextField
             id="outlined-controlled"
             label="Description"
-            value={description}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setDescription(event.target.value);
-            }}
+            value={commonData.description}
+            name={"description"}
+            onChange={handleChange}
           />
           <TextField
             id="outlined-controlled"
             label="Number of phone"
-            value={numberOfPhone}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setNumberOfPhone(event.target.value);
-            }}
+            value={commonData.numberOfPhone}
+            name={"numberOfPhone"}
+            onChange={handleChange}
           />
-          {type === "house" && (
+          {commonData.type === "house" && (
             <>
               <FormControl className="w-28">
                 <InputLabel id="demo-simple-select-label">
@@ -297,7 +315,7 @@ const Create: FC = () => {
               )}
             </>
           )}
-          {type === "flat" && (
+          {commonData.type === "flat" && (
             <>
               <FormControl className="w-28">
                 <InputLabel id="demo-simple-select-label">
@@ -339,8 +357,12 @@ const Create: FC = () => {
         onClose={handleClose}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Success!
+        <Alert
+          onClose={handleClose}
+          severity={toastType}
+          sx={{ width: "100%" }}
+        >
+          {toastText}
         </Alert>
       </Snackbar>
     </Container>

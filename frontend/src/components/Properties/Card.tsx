@@ -13,7 +13,7 @@ type TypeData = {
   toggleFavourite?: (data: IRealEstate) => void;
   isFavourite?: boolean;
   hasDelete?: boolean;
-  refetch: () => void;
+  refetch?: () => void;
 };
 
 const Card: FC<TypeData> = ({
@@ -21,7 +21,7 @@ const Card: FC<TypeData> = ({
   isFavourite = false,
   toggleFavourite = () => {},
   hasDelete = false,
-  refetch,
+  refetch = () => {},
 }) => {
   const { description, id, images, price, title, type, createdAt } = data;
 
@@ -55,9 +55,9 @@ const Card: FC<TypeData> = ({
           Type: {type === "flat" && <FaBuilding />}
           {type === "house" && <FaHouse />}
         </p>
-        <p>{description}</p>
+        <p className="w-[80%]">{description}</p>
       </Link>
-      <div className="ml-auto flex flex-col justify-between items-end">
+      <div className="ml-auto flex flex-col justify-between items-end w-[250px]">
         {!hasDelete && (
           <button
             className="rounded-full h-[40px] w-[40px] bg-slate-100 flex justify-center items-center"

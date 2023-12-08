@@ -1,6 +1,4 @@
-﻿
-using backend.Auth;
-using backend.Entities;
+﻿using backend.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;

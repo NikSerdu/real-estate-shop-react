@@ -34,7 +34,7 @@ const Auth: FC<TypeData> = ({ handleClose, isOpen, setIsOpen }) => {
     <div>
       <TransitionModal handleClose={handleClose} isOpen={isOpen}>
         <div className="bg-white rounded-xl pb-10 pt-5 px-10 text-center flex flex-col">
-          <div className="ml-auto" onClick={handleClose}>
+          <div className="ml-auto hover:cursor-pointer" onClick={handleClose}>
             <FaXmark />
           </div>
           <div className="mb-5 text-xl">
@@ -51,7 +51,6 @@ const Auth: FC<TypeData> = ({ handleClose, isOpen, setIsOpen }) => {
             />
             {authType === "register" && (
               <TextField
-                id="outlined-controlled"
                 label="Email"
                 value={email}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +60,6 @@ const Auth: FC<TypeData> = ({ handleClose, isOpen, setIsOpen }) => {
               />
             )}
             <TextField
-              id="outlined-controlled"
               label="Password"
               value={password}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

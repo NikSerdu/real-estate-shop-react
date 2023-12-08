@@ -1,5 +1,3 @@
-
-using backend.Auth;
 using backend.Data;
 using backend.DTOs;
 using backend.Entities;
@@ -52,12 +50,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlite("Data source=home.db"));
+builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlite("Data source=real-estate.db"));
 
 
 
 builder.Services.AddScoped<AbstractRealEstateService<House,CreateHouse>, HouseService>();
-/*builder.Services.AddScoped<IUserService, UserService>();*/
 builder.Services.AddScoped<AbstractRealEstateService<Flat,CreateFlat>, FlatService>();
 builder.Services.AddScoped<IRealEstateService, RealEstateService>();
 

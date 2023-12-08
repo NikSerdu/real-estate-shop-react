@@ -59,7 +59,7 @@ const Popular: FC = () => {
               className="bg-white bg-opacity-20 rounded-full px-3 py-2 outline-none text-black placeholder:text-black mt-10 placeholder:text-sm"
               placeholder="Email"
             />
-            <Button text="Subscribe" className="mx-auto bg-white text-black" />
+            <Button text="Subscribe" className="mx-auto  " />
           </div>
         </div>
       </div>

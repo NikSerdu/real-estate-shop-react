@@ -45,7 +45,9 @@ const Navbar: FC = () => {
                     .toLowerCase()
                     .split("/")
                     .includes(item.title.toLowerCase()) ||
-                  (location.pathname === "/" && item.href === "/"),
+                  (location.pathname === "/" && item.href === "/") ||
+                  (location.pathname === "/about-us" &&
+                    item.href === "/about-us"),
               })}
             >
               {item.title}
